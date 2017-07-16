@@ -16,7 +16,7 @@ class AdlFileSystem(AzureDLFileSystem, core.FileSystem):
     Implementation for Azure Data Lake """
     sep = '/'
 
-    def __init__(self, tenant_id=None, client_id=None, client_secret=None, store_name=None, **kwargs):
+    def __init__(self, tenant_id=None, client_id=None, client_secret=None, store_name=None, path=None, **kwargs):
         token = lib.auth(tenant_id=tenant_id, client_id=client_id, client_secret=client_secret)
         kwargs['store_name'] = store_name
         kwargs['token'] = token
