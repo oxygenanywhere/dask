@@ -24,7 +24,7 @@ class AdlFileSystem(AzureDLFileSystem, core.FileSystem):
 
     def _trim_filename(self, fn):
         so = infer_storage_options(fn)
-        return 'adl://' + so.get('host', '') + so['path']
+        return 'https://' + so.get('host', '') + so['path']
 
     def glob(self, path):
         """For a template path, return matching files"""
@@ -41,7 +41,7 @@ class AdlFileSystem(AzureDLFileSystem, core.FileSystem):
         return self.info(path)['ETag']
 
     def size(self, path):
-        adl_path = self._trim_filename(path) + '/Verkooporders.csv'
+        adl_path = self._trim_filename(path)
         return self.info(adl_path)['length']
 
 core._filesystems['adl'] = AdlFileSystem
