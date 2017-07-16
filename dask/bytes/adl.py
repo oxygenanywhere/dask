@@ -10,7 +10,7 @@ from ..base import tokenize
 class AdlFileSystem(AzureDLFileSystem, core.FileSystem):
     """API spec for the methods a filesystem
 
-    A filesystem must provide these methods, if it is to be registered as
+    A filesystem must provid§e these methods, if it is to be registered as
     a backend for dask.
 
     Implementation for Azure Data Lake """
@@ -34,7 +34,7 @@ class AdlFileSystem(AzureDLFileSystem, core.FileSystem):
        pass # no need to pre-make paths on ADL
 
     def open(self, path, mode='rb', **kwargs):
-        adl_path = path #no need to trim, as the FS does it self._trim_filename(path)
+        adl_path = self._trim_filename(path)
         f = AzureDLFileSystem.open(self, adl_path, mode=mode)
         return f
 
@@ -42,6 +42,7 @@ class AdlFileSystem(AzureDLFileSystem, core.FileSystem):
         return self.info(path)['ETag']
 
     def size(self, path):
-        return self.info(path)['length']
+        adl_path = self._trim_filename(path)
+        return self.info(adl_path)['length']
 
 core._filesystems['adl'] = AdlFileSystem
