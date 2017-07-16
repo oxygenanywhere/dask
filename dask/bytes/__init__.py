@@ -7,3 +7,4 @@ from . import local
 
 with ignoring(ImportError, SyntaxError):
     from . import s3
+    from . import adl
