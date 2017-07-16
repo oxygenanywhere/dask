@@ -24,7 +24,7 @@ class AdlFileSystem(AzureDLFileSystem, core.FileSystem):
 
     def _trim_filename(self, fn):
         so = infer_storage_options(fn)
-        return 'adl://' + so.get('host', '') + so['path']
+        return so.get('host', '') + so['path']
 
     def glob(self, path):
         """For a template path, return matching files"""
@@ -35,8 +35,7 @@ class AdlFileSystem(AzureDLFileSystem, core.FileSystem):
 
     def open(self, path, mode='rb', **kwargs):
         adl_path = self._trim_filename(path)
-        f = AzureDLFileSystem.open(self, adl_path, mode=mode)
-        return f
+        return self.open(self, adl_path, mode=mode)
 
     def ukey(self, path):
         return self.info(path)['ETag']
