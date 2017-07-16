@@ -42,6 +42,6 @@ class AdlFileSystem(AzureDLFileSystem, core.FileSystem):
         return self.info(path)['ETag']
 
     def size(self, path):
-        return self.info(path)['Size']
+        return self.info(path)['length']
 
 core._filesystems['adl'] = AdlFileSystem
