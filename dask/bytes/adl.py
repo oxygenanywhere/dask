@@ -35,7 +35,7 @@ class AdlFileSystem(AzureDLFileSystem, core.FileSystem):
 
     def open(self, path, mode='rb'):
         adl_path = self._trim_filename(path)
-        return self.open(self, adl_path, mode=mode)
+        return AzureDLFileSystem.open(self, adl_path, mode=mode)
 
     def ukey(self, path):
         adl_path = self._trim_filename(path)
