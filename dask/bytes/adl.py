@@ -24,7 +24,7 @@ class AdlFileSystem(AzureDLFileSystem, core.FileSystem):
 
     def _trim_filename(self, fn):
         so = infer_storage_options(fn)
-        return 'https://' + so.get('host', '') + so['path']
+        return so['path']
 
     def glob(self, path):
         """For a template path, return matching files"""
