@@ -38,7 +38,8 @@ class AdlFileSystem(AzureDLFileSystem, core.FileSystem):
         return self.open(self, adl_path, mode=mode)
 
     def ukey(self, path):
-        return self.info(path)['ETag']
+        adl_path = self._trim_filename(path)
+        return tokenize(self.info(adl_path)['modificationTime'])
 
     def size(self, path):
         adl_path = self._trim_filename(path)
