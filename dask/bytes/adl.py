@@ -28,7 +28,9 @@ class AdlFileSystem(AzureDLFileSystem, core.FileSystem):
 
     def glob(self, path):
         """For a template path, return matching files"""
-        return sorted(AzureDLFileSystem.glob(self, path))
+        adl_path = self._trim_filename(path)
+        #return ['s3://%s' % s for s in S3FileSystem.glob(self, s3_path)]
+        return sorted(AzureDLFileSystem.glob(self, adl_path))
 
     def mkdirs(self, path):
        pass # no need to pre-make paths on ADL
