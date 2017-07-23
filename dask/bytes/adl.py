@@ -1,11 +1,13 @@
 from __future__ import print_function, division, absolute_import
 
+import logging
 from azure.datalake.store import lib, AzureDLFileSystem
 
 from . import core
 from .utils import infer_storage_options
 from ..base import tokenize
 
+logger = logging.getLogger(__name__)
 
 class AdlFileSystem(AzureDLFileSystem, core.FileSystem):
     """API spec for the methods a filesystem
@@ -29,8 +31,7 @@ class AdlFileSystem(AzureDLFileSystem, core.FileSystem):
     def glob(self, path):
         """For a template path, return matching files"""
         adl_path = self._trim_filename(path)
-        #return ['s3://%s' % s for s in S3FileSystem.glob(self, s3_path)]
-        return sorted(AzureDLFileSystem.glob(self, adl_path))
+        return ['adl://%s' % s for s in AzureDLFileSystem.glob(self, adl_path)]
 
     def mkdirs(self, path):
        pass # no need to pre-make paths on ADL
@@ -46,5 +47,11 @@ class AdlFileSystem(AzureDLFileSystem, core.FileSystem):
     def size(self, path):
         adl_path = self._trim_filename(path)
         return self.info(adl_path)['length']
+
+    def __getstate__(self):
+        dic = self.__dict__.copy()
+        del dic['token']
+        logger.debug("Serialize with state: %s", dic)
+        return dic
 
 core._filesystems['adl'] = AdlFileSystem
