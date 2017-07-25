@@ -7,8 +7,6 @@ from . import core
 from .utils import infer_storage_options
 from ..base import tokenize
 
-logger = logging.getLogger(__name__)
-
 class AdlFileSystem(AzureDLFileSystem, core.FileSystem):
     """API spec for the methods a filesystem
 
@@ -19,6 +17,7 @@ class AdlFileSystem(AzureDLFileSystem, core.FileSystem):
     sep = '/'
 
     def __init__(self, tenant_id=None, client_id=None, client_secret=None, store_name=None, **kwargs):
+        self.logger = logging.getLogger(__name__)
         token = lib.auth(tenant_id=tenant_id, client_id=client_id, client_secret=client_secret)
         kwargs['store_name'] = store_name
         kwargs['token'] = token
@@ -51,7 +50,7 @@ class AdlFileSystem(AzureDLFileSystem, core.FileSystem):
     def __getstate__(self):
         dic = self.__dict__.copy()
         del dic['token']
-        logger.debug("Serialize with state: %s", dic)
+        self.logger.debug("Serialize with state: %s", dic)
         return dic
 
 core._filesystems['adl'] = AdlFileSystem
