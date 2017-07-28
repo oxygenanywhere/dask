@@ -51,7 +51,7 @@ class AdlFileSystem(AzureDLFileSystem, core.FileSystem):
 
     def __getstate__(self):
         dic = self.__dict__.copy()
-        def dic['token']
+        del dic['token']
         del dic['azure']
         self.logger.debug("Serialize with state: %s", dic)
         return dic
