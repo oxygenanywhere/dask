@@ -18,7 +18,6 @@ class AdlFileSystem(AzureDLFileSystem, core.FileSystem):
 
     def __init__(self, tenant_id=None, client_id=None, client_secret=None, store_name=None, **kwargs):
         self.logger = logging.getLogger(__name__)
-        self.logger.setLevel(logging.DEBUG)
 
         token = lib.auth(tenant_id=tenant_id, client_id=client_id, client_secret=client_secret)
         kwargs['store_name'] = store_name
@@ -39,7 +38,8 @@ class AdlFileSystem(AzureDLFileSystem, core.FileSystem):
 
     def open(self, path, mode='rb'):
         adl_path = self._trim_filename(path)
-        return AzureDLFileSystem.open(self, adl_path, mode=mode)
+        f = AzureDLFileSystem.open(self, adl_path, mode=mode)
+        return f
 
     def ukey(self, path):
         adl_path = self._trim_filename(path)
@@ -51,7 +51,7 @@ class AdlFileSystem(AzureDLFileSystem, core.FileSystem):
 
     def __getstate__(self):
         dic = self.__dict__.copy()
-        del dic['token']
+        def dic['token']
         del dic['azure']
         self.logger.debug("Serialize with state: %s", dic)
         return dic
