@@ -38,7 +38,7 @@ class AdlFileSystem(AzureDLFileSystem, core.FileSystem):
 
     def open(self, path, mode='rb'):
         adl_path = self._trim_filename(path)
-        f = AzureDLFileSystem.open(self, adl_path, mode=mode)
+        f = self.open(self, adl_path, mode=mode)
         return f
 
     def ukey(self, path):
@@ -55,5 +55,11 @@ class AdlFileSystem(AzureDLFileSystem, core.FileSystem):
         del dic['azure']
         self.logger.debug("Serialize with state: %s", dic)
         return dic
+
+    def __setstate__(self, state):
+        self.logger.debug("De-serialize with state: %s", state)
+        self.__dict__.update(state)
+        self._conn = {}
+        self.adl = self.connect()
 
 core._filesystems['adl'] = AdlFileSystem
