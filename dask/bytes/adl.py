@@ -12,17 +12,27 @@ logger = logging.getLogger(__name__)
 class AdlFileSystem(AzureDLFileSystem, core.FileSystem):
     """API spec for the methods a filesystem
 
-    A filesystem must provid§e these methods, if it is to be registered as
+    A filesystem must provide these methods, if it is to be registered as
     a backend for dask.
 
     Implementation for Azure Data Lake """
     sep = '/'
 
     def __init__(self, tenant_id=None, client_id=None, client_secret=None, store_name=None, **kwargs):
-        token = lib.auth(tenant_id=tenant_id, client_id=client_id, client_secret=client_secret)
+        self.tenant_id = tenant_id
+        self.client_id = client_id
+        self.client_secret = client_secret
+        self.store_name = store_name
+        self.kwargs = kwargs
         kwargs['store_name'] = store_name
         kwargs['token'] = token
-        AzureDLFileSystem.__init__(self, **kwargs)
+        self.connect()
+    
+    def connect(self):
+        token = lib.auth(tenant_id = self.tenant_id, 
+                         client_id = self.client_id, 
+                         client_secret = self.client_secret)
+        AzureDLFileSystem.__init__(self, **self.kwargs)
 
     def _trim_filename(self, fn):
         so = infer_storage_options(fn)
@@ -52,11 +62,13 @@ class AdlFileSystem(AzureDLFileSystem, core.FileSystem):
     def __getstate__(self):
         dic = self.__dict__.copy()
         del dic['token']
+        del dic['azure']
         logger.debug("Serialize with state: %s", dic)
         return dic
 
     def __setstate__(self, state):
         logger.debug("De-serialize with state: %s", state)
         self.__dict__.update(state)
+        self.connect()
 
 core._filesystems['adl'] = AdlFileSystem
