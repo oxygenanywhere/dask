@@ -25,9 +25,9 @@ class AdlFileSystem(AzureDLFileSystem, core.FileSystem):
         self.store_name = store_name
         self.kwargs = kwargs
         self.kwargs['store_name'] = store_name
-        self.connect()
+        self.do_connect()
     
-    def connect(self):
+    def do_connect(self):
         token = lib.auth(tenant_id = self.tenant_id, 
                          client_id = self.client_id, 
                          client_secret = self.client_secret)
@@ -69,6 +69,6 @@ class AdlFileSystem(AzureDLFileSystem, core.FileSystem):
     def __setstate__(self, state):
         logger.debug("De-serialize with state: %s", state)
         self.__dict__.update(state)
-        self.connect()
+        self.do_connect()
 
 core._filesystems['adl'] = AdlFileSystem
