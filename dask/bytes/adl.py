@@ -24,14 +24,14 @@ class AdlFileSystem(AzureDLFileSystem, core.FileSystem):
         self.client_secret = client_secret
         self.store_name = store_name
         self.kwargs = kwargs
-        kwargs['store_name'] = store_name
+        self.kwargs['store_name'] = store_name
         self.connect()
     
     def connect(self):
         token = lib.auth(tenant_id = self.tenant_id, 
                          client_id = self.client_id, 
                          client_secret = self.client_secret)
-        kwargs['token'] = token
+        self.kwargs['token'] = token
         AzureDLFileSystem.__init__(self, **self.kwargs)
 
     def _trim_filename(self, fn):
