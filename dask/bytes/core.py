@@ -491,7 +491,7 @@ def ensure_protocol(protocol):
     elif protocol == 'adl':
         msg = ("Need to install `adls` for ADLS support\n"
                "   pip install azure-datalake-store")
-        import_required('azure-datalake-store', msg)
+        import_required('azure.datalake.store', msg)
     elif protocol in _filesystems:
         return
 
