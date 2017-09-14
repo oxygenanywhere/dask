@@ -18,13 +18,13 @@ class AdlFileSystem(AzureDLFileSystem, core.FileSystem):
     Implementation for Azure Data Lake """
     sep = '/'
 
-    def __init__(self, tenant_id=None, client_id=None, client_secret=None, store_name=None, **kwargs):
+    def __init__(self, tenant_id=None, client_id=None, client_secret=None, **kwargs):
         self.tenant_id = tenant_id
         self.client_id = client_id
         self.client_secret = client_secret
-        self.store_name = store_name
+        self.store_name = kwargs['host']
         self.kwargs = kwargs
-        self.kwargs['store_name'] = store_name
+        self.kwargs['store_name'] = kwargs['host']
         self.do_connect()
     
     def do_connect(self):

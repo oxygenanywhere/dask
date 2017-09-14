@@ -488,7 +488,10 @@ def ensure_protocol(protocol):
                "    conda install distributed hdfs3 -c conda-forge")
         import_required('distributed.hdfs', msg)
         import_required('hdfs3', msg)
-
+    elif protocol == 'adl':
+        msg = ("Need to install `adls` for ADLS support\n"
+               "   pip install azure-datalake-store")
+        import_required('azure.datalake.store', msg)
     elif protocol in _filesystems:
         return
 
