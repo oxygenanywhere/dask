@@ -42,7 +42,7 @@ class AdlFileSystem(AzureDLFileSystem, core.FileSystem):
         """For a template path, return matching files"""
         adl_path = self._trim_filename(path)
         glob = AzureDLFileSystem.glob(self, adl_path)
-        return ['adl://%s.azuredatalakestore.net/%s', % (self.store_name, s for s in glob)]
+        return ['adl://%s.azuredatalakestore.net/%s' % (self.store_name, s for s in glob)]
 
     def mkdirs(self, path):
        pass # no need to pre-make paths on ADL
