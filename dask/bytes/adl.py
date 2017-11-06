@@ -40,7 +40,9 @@ class AdlFileSystem(AzureDLFileSystem, core.FileSystem):
 
     def glob(self, path):
         """For a template path, return matching files"""
+        logger.debug("Template path: %s", path)
         adl_path = self._trim_filename(path)
+        logger.debug("ADL Path: %s", adl_path)
         return ['adl://%s' % s for s in AzureDLFileSystem.glob(self, adl_path)]
 
     def mkdirs(self, path):
