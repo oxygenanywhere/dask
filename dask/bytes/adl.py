@@ -43,7 +43,9 @@ class AdlFileSystem(AzureDLFileSystem, core.FileSystem):
         logger.debug("Template path: %s", path)
         adl_path = self._trim_filename(path)
         logger.debug("ADL Path: %s", adl_path)
-        return ['adl://%s' % s for s in AzureDLFileSystem.glob(self, adl_path)]
+        glob = AzureDLFileSystem.glob(self, adl_path)
+        logger.debug("Glob: %s", glob)
+        return ['adl://%s' % s for s in glob]
 
     def mkdirs(self, path):
        pass # no need to pre-make paths on ADL
