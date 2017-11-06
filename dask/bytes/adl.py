@@ -45,7 +45,7 @@ class AdlFileSystem(AzureDLFileSystem, core.FileSystem):
         logger.debug("ADL Path: %s", adl_path)
         glob = AzureDLFileSystem.glob(self, adl_path)
         logger.debug("Glob: %s", glob)
-        return ['adl://%s' % s for s in glob]
+        return ['adl://alkmaar.azuredatalakestore.net/%s' % s for s in glob]
 
     def mkdirs(self, path):
        pass # no need to pre-make paths on ADL
