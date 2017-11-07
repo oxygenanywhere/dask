@@ -25,6 +25,7 @@ class AdlFileSystem(AzureDLFileSystem, core.FileSystem):
         self.store_name = kwargs['host']
         self.kwargs = kwargs
         self.kwargs['store_name'] = kwargs['host']
+        logger.debug("Init with kwargs: %s", self.kwargs)
         self.do_connect()
     
     def do_connect(self):
